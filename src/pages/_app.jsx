@@ -1,9 +1,7 @@
-import "@/styles/globals.css";
 import Script from "next/script";
 import Head from "next/head";
-import type { AppProps } from "next/app";
-
-export default function App({ Component, pageProps }: AppProps) {
+import "../styles/globals.css";
+export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -18,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         id="bootstrap-cdn"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       />
-      <Component {...pageProps} />{" "}
+      <Component {...pageProps} />
     </>
   );
 }
