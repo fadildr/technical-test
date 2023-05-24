@@ -3,5 +3,5 @@ const CONSTANT = {
   URL_CURRENT: process.env.NEXT_PUBLIC_URL_CURRENT,
   URL_HOURS: process.env.NEXT_PUBLIC_URL_HOURS,
 };
-console.log(CONSTANT.API_KEY);
+
 export default CONSTANT;

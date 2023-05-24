@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CONSTANT from "../utils/constant";
 import { AiOutlineCloud } from "react-icons/ai";
 import { TiWeatherSunny } from "react-icons/ti";
@@ -8,14 +8,15 @@ import {
   BsCloudLightningRain,
   BsCloudHaze,
 } from "react-icons/bs";
-const HomePage = () => {
-  const [selectedCity, setSelectedCity] = useState("Jakarta");
-  const [selectedHour, setSelectedHour] = useState("");
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [hourlyWeather, setHourlyWeather] = useState([]);
 
-  const cities = ["Jakarta", "Bandung", "Semarang", "Surabaya"];
-  const [currentTime, setCurrentTime] = useState("");
+const HomePage: React.FC = () => {
+  const [selectedCity, setSelectedCity] = useState<string>("Jakarta");
+  const [selectedHour, setSelectedHour] = useState<string>("");
+  const [currentWeather, setCurrentWeather] = useState<any>(null);
+  const [hourlyWeather, setHourlyWeather] = useState<any[]>([]);
+
+  const cities: string[] = ["Jakarta", "Bandung", "Semarang", "Surabaya"];
+  const [currentTime, setCurrentTime] = useState<string>("");
   const hours = [
     { label: "00:00", value: "00:00:00" },
     { label: "01:00", value: "01:00:00" },
@@ -32,15 +33,15 @@ const HomePage = () => {
     { label: "12:00", value: "12:00:00" },
     // Tambahkan opsi jam lainnya sesuai kebutuhan
   ];
-  const apiKey = CONSTANT.API_KEY; // Ganti dengan API key Anda
-  const urlCurrent = CONSTANT.URL_CURRENT;
-  const urlHours = CONSTANT.URL_HOURS;
-  // console.log(apiKey, urlCurrent, urlHours);
-  const handleCityChange = (e) => {
+  const apiKey: string | undefined = CONSTANT.API_KEY; // Ganti dengan API key Anda
+  const urlCurrent: string | undefined = CONSTANT.URL_CURRENT;
+  const urlHours: string | undefined = CONSTANT.URL_HOURS;
+
+  const handleCityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCity(e.target.value);
   };
 
-  const handleHourChange = (e) => {
+  const handleHourChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // setSelectedHour(e.target.value);
     alert("Sorry, we cant retrieve hourly data at this time");
   };
@@ -50,10 +51,8 @@ const HomePage = () => {
       const date = new Date();
       setCurrentTime(date.toLocaleTimeString());
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,17 +82,19 @@ const HomePage = () => {
     const url = `${urlCurrent}?q=${selectedCity}&units=metric&appid=${apiKey}`;
     return fetch(url);
   };
-  const convertTime = (time) => {
+
+  const convertTime = (time: string) => {
     const timeObj = new Date(`1970-01-01T${time}Z`);
     const timestamp = Math.floor(timeObj.getTime() / 1000);
     return timestamp;
   };
-  const fetchHourlyWeather = (lat, lon) => {
+
+  const fetchHourlyWeather = (lat: number, lon: number) => {
     const currentTime = convertTime(selectedHour);
     const url = `${urlHours}?lat=${lat}&lon=${lon}&units=metric&dt=${currentTime}&appid=${apiKey}`;
     return fetch(url);
   };
-  console.log(currentWeather);
+
   return (
     <div className="container text-center">
       <div className="d-flex justify-content-center mt-5">
@@ -102,8 +103,7 @@ const HomePage = () => {
           <select
             value={selectedCity}
             className="custom-select"
-            onChange={handleCityChange}
-          >
+            onChange={handleCityChange}>
             {cities.map((city, index) => (
               <option key={index} value={city}>
                 {city}
@@ -114,8 +114,7 @@ const HomePage = () => {
           <select
             className="custom-select"
             value={selectedHour}
-            onChange={handleHourChange}
-          >
+            onChange={handleHourChange}>
             <option value="">{currentTime}</option>
             {hours.map((hour, index) => (
               <option key={index} value={hour.value}>
@@ -126,7 +125,6 @@ const HomePage = () => {
           is {currentWeather?.weather[0].description}
         </div>
       </div>
-
       {currentWeather && (
         <div className="mt-4">
           <div className="d-flex justify-content-center gap-4 mb-4 ">
